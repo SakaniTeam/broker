@@ -27,15 +27,12 @@ class _HomePageState extends State<HomePage> {
     await tblProduct.get().then((querySnapshot) {
       querySnapshot.docs.forEach((doc) {
         Map<String, dynamic> store = doc.data() as Map<String, dynamic>;
-        print("=============================================");
         store['documentId'] = doc.id;
         users.add(store);
       });
 
       if (users.isNotEmpty) {
-        // Assuming there is only one user for the current implementation
         userName = users.isNotEmpty ? users[0]['userName'] as String? : null;
-        // Use index 0 to get the first user's data
       }
       setState(() {});
     });
@@ -73,30 +70,32 @@ class _HomePageState extends State<HomePage> {
                 color: Colors.grey,
               ),
             ),
-            const SizedBox(height: 50),
-            ListTile(
-              title: const Text('Edit your profile'),
-              leading: const Icon(Icons.edit),
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => EditPage(),
-                    ));
-              },
-            ),
+            const SizedBox(height: 20),
+            // ListTile(
+            //   title: const Text('Edit your profile'),
+            //   leading: const Icon(Icons.edit),
+            //   onTap: () {
+            //     Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => EditPage(),
+            //         ));
+            //   },
+            // ),
             ListTile(
               title: const Text('Notifications'),
               leading: const Icon(Icons.notifications),
-              onTap: () {
-                
-              },
+              onTap: () {},
             ),
             ListTile(
               title: const Text('Contact Us'),
               leading: const Icon(Icons.contact_support),
               onTap: () {
-             Navigator.push(context, MaterialPageRoute(builder: (context) => ContactUs(),));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ContactUs(),
+                    ));
               },
             ),
             ListTile(
@@ -119,8 +118,8 @@ class _HomePageState extends State<HomePage> {
             height: double.infinity,
             width: double.infinity,
             color: const Color.fromARGB(255, 255, 255, 255),
-            child: const Text(
-              "   Welcome",
+            child: Text(
+              "   Welcome \n $userName",
               style: TextStyle(
                 color: Color.fromARGB(255, 251, 175, 109),
                 fontSize: 40,
@@ -139,7 +138,6 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Column(
                 children: [
-                  const Row(),
                   const SizedBox(
                     height: 55,
                   ),
@@ -175,7 +173,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                       IconButton(
                         onPressed: () {
-                          // Handle button press
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const AfterHome()));
                         },
                         icon: const Icon(Icons.arrow_forward_ios),
                         color: const Color.fromARGB(255, 255, 255, 255),

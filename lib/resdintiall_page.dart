@@ -10,23 +10,32 @@ class ResdintiallPage extends StatefulWidget {
 
 final GlobalKey<FormState> _formKey = GlobalKey();
 
-final propertyAdressController = TextEditingController();
-final priceController = TextEditingController();
-final phoneController = TextEditingController();
-final detailsController = TextEditingController();
+final propertyRAdressController = TextEditingController();
+final priceRController = TextEditingController();
+final phoneRController = TextEditingController();
+final detailsRController = TextEditingController();
 String typeR = "";
-String status = "";
-String rentduration = "";
+String Statusss = "";
+String rentRduration = "";
 
 class _ResdintiallPageState extends State<ResdintiallPage> {
   @override
   void dispose() {
     _formKey.currentState?.dispose();
-    priceController.clear();
-    phoneController.clear();
-    detailsController.clear();
-    propertyAdressController.clear();
+    // priceRController.clear();
+    // phoneRController.clear();
+    // detailsRController.clear();
+    // propertyRAdressController.clear();
     super.dispose();
+  }
+  @override
+  void initState() {
+       priceRController.clear();
+    phoneRController.clear();
+    detailsRController.clear();
+    propertyRAdressController.clear();
+   
+    super.initState();
   }
 
   @override
@@ -111,10 +120,10 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                     if (value == null) return 'You must choose one';
                   },
                   onSaved: (newValue) {
-                    if (newValue != null) {
-                      status = newValue;
-                      print('This is the Second one +++++++ $newValue');
-                    }
+                    // if (newValue != null) {
+                    //   Statusss = newValue;
+                    //   print('This is the Second one +++++++ $newValue');
+                    // }
                   },
                   items: const [
                     DropdownMenuItem(
@@ -127,11 +136,10 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                     ),
                   ],
                   onChanged: (value) {
-                    // handle onChanged
+                    Statusss = value.toString();
                   },
                   decoration: InputDecoration(
                     fillColor: Colors.grey,
-                    labelText: 'States',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                       borderSide: const BorderSide(
@@ -154,10 +162,9 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                   validator: (value) {
                     if (value!.isEmpty) return 'You must choose one';
                   },
-                  controller: propertyAdressController,
+                  controller: propertyRAdressController,
                   decoration: InputDecoration(
                     fillColor: Colors.grey,
-                    labelText: 'Property Address',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                       borderSide: const BorderSide(
@@ -182,10 +189,10 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                       return 'Enter a Valid Number';
                     if (value!.isEmpty) return 'You must choose one';
                   },
-                  controller: priceController,
+                  controller: priceRController,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     fillColor: Colors.grey,
-                    labelText: 'Price',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
                       borderSide: const BorderSide(
@@ -206,17 +213,17 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                 ),
                 TextFormField(
                   validator: (value) {
-                    if (value!.isEmpty && value!.length != 11) 
-                     return 'field can not be empty and must be eleven numbers';
-                      // if (value!.length != 11) {
-                      //   return 'must be eleven 11 numbersssss';
-                      // }
-                      
-                    
-                   
+                    return (value == null || value.isEmpty)
+                        ? 'can not be empty'
+                        : (value.length != 11)
+                            ? 'Value must be eleven characters'
+                            : null;
+                    // if (value!.length != 11) {
+                    //   return 'must be eleven 11 numbersssss';
+                    // }
                   },
                   keyboardType: TextInputType.number,
-                  controller: phoneController,
+                  controller: phoneRController,
                   decoration: InputDecoration(
                     fillColor: Colors.grey,
                     border: OutlineInputBorder(
@@ -241,7 +248,7 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                   validator: (value) {
                     if (value!.isEmpty) return 'You must choose one';
                   },
-                  controller: detailsController,
+                  controller: detailsRController,
                   decoration: InputDecoration(
                     fillColor: Colors.grey,
                     border: OutlineInputBorder(
@@ -265,11 +272,11 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                   validator: (value) {
                     if (value == null) return 'You must choose one';
                   },
-                  onSaved: (newValue) {
-                    if (newValue != null) {
-                      rentduration = newValue;
-                    }
-                  },
+                  // onSaved: (newValue) {
+                  //   if (newValue != null) {
+                  //     rentduration = newValue;
+                  //   }
+                  // },
                   items: const [
                     DropdownMenuItem(
                       value: '1',
@@ -299,7 +306,9 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                       ),
                     ),
                   ),
-                  onChanged: (String? value) {},
+                  onChanged: (String? value) {
+                    rentRduration = value.toString();
+                  },
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
