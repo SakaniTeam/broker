@@ -6,7 +6,6 @@ import 'package:abdo/Widgets/CustomEmailText.dart';
 import 'package:abdo/Widgets/CustomPasswordConfirmationfield.dart';
 import 'package:abdo/Widgets/CustomTextPassword.dart';
 import 'package:abdo/Widgets/CustomUserText.dart';
-import 'package:abdo/home_page.dart';
 import 'package:abdo/login_Page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +15,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class SignUpPage extends StatefulWidget {
-  SignUpPage({super.key});
+  const SignUpPage({super.key});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -33,9 +32,8 @@ class _SignUpPageState extends State<SignUpPage> {
   String? confirmPassword;
 
   bool isLoading = false;
-  bool isSuccess = false;
-
-  GlobalKey<FormState> _gdf56565 = GlobalKey();
+  bool isPasswordMatchesRuels = false;
+  final GlobalKey<FormState> _gdf56565 = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +43,8 @@ class _SignUpPageState extends State<SignUpPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Colors.orange,
-          title: Padding(
-            padding: const EdgeInsets.all(80),
+          title: const Padding(
+            padding: EdgeInsets.all(80),
             child: Text(
               'Sign Up',
               style: TextStyle(
@@ -64,8 +62,8 @@ class _SignUpPageState extends State<SignUpPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, top: 10),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8, top: 10),
                       child: Text(
                         'User Name',
                         style: TextStyle(
@@ -83,8 +81,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     Container(
                       height: 4,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, top: 10),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8, top: 10),
                       child: Text(
                         'Email',
                         style: TextStyle(
@@ -102,8 +100,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         email = data;
                       },
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, top: 10),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8, top: 10),
                       child: Text(
                         'Password',
                         style: TextStyle(
@@ -135,23 +133,23 @@ class _SignUpPageState extends State<SignUpPage> {
                             minLength: 8,
                             onSuccess: () {
                               setState(() {
-                                isSuccess = true;
+                                isPasswordMatchesRuels = true;
                               });
                               // ShowSnackBar(context, 'Password is matched');
                             },
                             onFail: () {
                               setState(() {
-                                isSuccess = false;
+                                isPasswordMatchesRuels = false;
                               });
                             },
-                            controller: controller),
+                            controller: controller,),
                       ),
                     ),
                     Container(
                       height: 4,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8, top: 20),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8, top: 20),
                       child: Text(
                         ' Confirm Password',
                         style: TextStyle(
@@ -173,14 +171,21 @@ class _SignUpPageState extends State<SignUpPage> {
                     Center(
                         child: MaterialButton(
                       color: Colors.orange,
-                      child: Text('signup'),
+                      child: const Text('signup'),
                       onPressed: () async {
                         if (_gdf56565.currentState!.validate()) {
+                          if (!isPasswordMatchesRuels) {
+                            ShowSnackBar(
+                                context, 'Password should match rules',);
+                            return;
+                          }
                           setState(() {
                             isLoading = true;
                           });
                           try {
                             userRegister();
+                            FirebaseAuth.instance.currentUser!
+                                .sendEmailVerification();
                             navMethod(context);
                           } on FirebaseAuthException catch (e) {
                             if (e.code == 'user-not-found') {
@@ -193,62 +198,16 @@ class _SignUpPageState extends State<SignUpPage> {
                             isLoading = false;
                           });
                           // ShowSnackBar(context, 'Email already created');
-                        } else {}
+                        }
                       },
-                    )),
-                    // Container(
-                    //   height: 15,
-                    // ),
-                    // Center(
-                    //   child: Text(
-                    //     'OR',
-                    //     style: TextStyle(
-                    //         fontSize: 20, fontWeight: FontWeight.bold),
-                    //   ),
-                    // ),
-                    // Container(
-                    //   height: 20,
-                    // ),
-                    // Row(
-                    //   // mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(left: 35),
-                    //       child: GestureDetector(
-                    //         onTap: () {
-                    //           signInWithGoogle();
-                    //         },
-                    //         child: Image.asset(
-                    //           'assets/google.jpg',
-                    //           width: 40,
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(left: 105),
-                    //       child: Image.asset(
-                    //         'assets/download.png',
-                    //         width: 40,
-                    //       ),
-                    //     ),
-                    //     Padding(
-                    //       padding: const EdgeInsets.only(left: 105),
-                    //       child: Image.asset(
-                    //         'assets/apple.jpg',
-                    //         width: 40,
-                    //       ),
-                    //     ),
-
-                    //     // Text('Already have an account?')
-                    //   ],
-                    // ),
+                    ),),
                     Container(
                       height: 5,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           'Already have an account?',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
@@ -263,15 +222,15 @@ class _SignUpPageState extends State<SignUpPage> {
                               ),
                             );
                           },
-                          child: Text(
+                          child: const Text(
                             '  Login',
                             style: TextStyle(
                                 color: Colors.orange,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.bold,),
                           ),
-                        )
+                        ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ],
@@ -296,15 +255,15 @@ class _SignUpPageState extends State<SignUpPage> {
   void ShowSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('$message'),
+        content: Text(message),
         backgroundColor: Colors.blue,
       ),
     );
   }
 
   Future<void> userRegister() async {
-    var auth = FirebaseAuth.instance;
-    UserCredential user = await auth.createUserWithEmailAndPassword(
-        email: email!, password: password!);
+    final auth = FirebaseAuth.instance;
+    final UserCredential user = await auth.createUserWithEmailAndPassword(
+        email: email!, password: password!,);
   }
 }

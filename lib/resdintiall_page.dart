@@ -1,17 +1,8 @@
-import 'dart:io';
-
-import 'package:abdo/LLocation.dart';
-import 'package:abdo/home2.dart';
-import 'package:abdo/location.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:abdo/location_page.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
 
 class ResdintiallPage extends StatefulWidget {
-  ResdintiallPage({super.key});
+  const ResdintiallPage({super.key});
 
   @override
   State<ResdintiallPage> createState() => _ResdintiallPageState();
@@ -19,25 +10,25 @@ class ResdintiallPage extends StatefulWidget {
 
 final GlobalKey<FormState> _formKey = GlobalKey();
 
-final typeRController = TextEditingController();
-final statusController = TextEditingController();
 final propertyAdressController = TextEditingController();
 final priceController = TextEditingController();
 final phoneController = TextEditingController();
 final detailsController = TextEditingController();
-final rentDurationController = TextEditingController();
 String typeR = "";
 String status = "";
 String rentduration = "";
-double price = 0;
-
 
 class _ResdintiallPageState extends State<ResdintiallPage> {
   @override
   void dispose() {
-  _formKey.currentState?.dispose() ;
+    _formKey.currentState?.dispose();
+    priceController.clear();
+    phoneController.clear();
+    detailsController.clear();
+    propertyAdressController.clear();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,20 +36,20 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
         automaticallyImplyLeading: false,
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Color.fromARGB(0, 206, 25, 25),
-        title: Text(
+        backgroundColor: const Color.fromARGB(0, 206, 25, 25),
+        title: const Text(
           'Add Residential Property ',
           style: TextStyle(color: Colors.black),
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
             child: Column(
               children: <Widget>[
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
@@ -71,7 +62,7 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                   validator: (value) {
                     if (value == null) return 'You must choose one';
                   },
-                  items: [
+                  items: const [
                     DropdownMenuItem(
                       value: 'Apartment ',
                       child: Text('Apartment'),
@@ -100,15 +91,14 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                     fillColor: Colors.grey,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.grey,
                         width: 1,
                       ),
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                const Row(
                   children: [
                     Text(
                       "Status",
@@ -126,7 +116,7 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                       print('This is the Second one +++++++ $newValue');
                     }
                   },
-                  items: [
+                  items: const [
                     DropdownMenuItem(
                       value: 'Rent',
                       child: Text('Rent'),
@@ -144,14 +134,14 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                     labelText: 'States',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.grey,
                         width: 1,
                       ),
                     ),
                   ),
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
@@ -170,14 +160,14 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                     labelText: 'Property Address',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.grey,
                         width: 1,
                       ),
                     ),
                   ),
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
@@ -198,14 +188,14 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                     labelText: 'Price',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.grey,
                         width: 1,
                       ),
                     ),
                   ),
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
@@ -216,21 +206,29 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                 ),
                 TextFormField(
                   validator: (value) {
-                    if (value!.isEmpty) return 'You must choose one';
+                    if (value!.isEmpty && value!.length != 11) 
+                     return 'field can not be empty and must be eleven numbers';
+                      // if (value!.length != 11) {
+                      //   return 'must be eleven 11 numbersssss';
+                      // }
+                      
+                    
+                   
                   },
+                  keyboardType: TextInputType.number,
                   controller: phoneController,
                   decoration: InputDecoration(
                     fillColor: Colors.grey,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.grey,
                         width: 1,
                       ),
                     ),
                   ),
                 ),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
@@ -248,15 +246,14 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                     fillColor: Colors.grey,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.grey,
                         width: 1,
                       ),
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                const Row(
                   children: [
                     Text(
                       "Rent duration",
@@ -273,7 +270,7 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                       rentduration = newValue;
                     }
                   },
-                  items: [
+                  items: const [
                     DropdownMenuItem(
                       value: '1',
                       child: Text('1 Month'),
@@ -282,63 +279,63 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
                       value: '2',
                       child: Text('2 Months'),
                     ),
+                    DropdownMenuItem(
+                      value: '3',
+                      child: Text('3 Months'),
+                    ),
+                    DropdownMenuItem(
+                      value: '4',
+                      child: Text('4 Months'),
+                    ),
                     // Add more options as needed
                   ],
-                  onChanged: (value) {
-                    // handle onChanged
-                  },
                   decoration: InputDecoration(
                     fillColor: Colors.grey,
                     labelText: 'Type',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(6),
-                      borderSide: BorderSide(
+                      borderSide: const BorderSide(
                         color: Colors.grey,
-                        width: 1,
                       ),
                     ),
                   ),
+                  onChanged: (String? value) {},
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AfterHome(),
-                            ));
+                        Navigator.pop(
+                          context,
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromRGBO(250, 129, 40, 1),
                         foregroundColor: Colors.white,
                       ),
-                      child: Text('Back'),
+                      child: const Text('Back'),
                     ),
                     ElevatedButton(
                       onPressed: () async {
-                         setState(() {
-                                
-                              });
-                       if (_formKey.currentState!.validate()) {
+                        setState(() {});
+                        if (_formKey.currentState!.validate()) {
                           _formKey.currentState!.save();
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => location(),
-                                
+                                builder: (context) => const LOcationPage(
+                                  isResd: true,
+                                ),
                               ));
-                              setState(() {
-                                
-                              });
-                       }
+                          setState(() {});
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromRGBO(250, 129, 40, 1),
                         foregroundColor: Colors.white,
                       ),
-                      child: Text('Next'),
+                      child: const Text('Next'),
                     ),
                   ],
                 ),
@@ -350,4 +347,3 @@ class _ResdintiallPageState extends State<ResdintiallPage> {
     );
   }
 }
-

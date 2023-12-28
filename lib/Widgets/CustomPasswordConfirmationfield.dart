@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-import 'package:abdo/Widgets/CustomTextPassword.dart';
-import 'package:abdo/sign_up.dart';
 import 'package:flutter/material.dart';
 
 class CustomPasswordConfirmationTextFiled extends StatelessWidget {
@@ -18,15 +16,18 @@ class CustomPasswordConfirmationTextFiled extends StatelessWidget {
           if (data!.isEmpty) {
             return 'field is required';
           } 
-          if (data != password )
-          return 'The confirm password confirmation do not match';
+          if (data != password ) {
+            return 'The confirm password confirmation do not match';
+          return null;
+          }
+          return null;
         },
         onChanged: onChange,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.lock),
+            prefixIcon: const Icon(Icons.lock),
             hintText: hintText,
-            hintStyle: TextStyle(fontSize: 14, color: Colors.black),
-            contentPadding: EdgeInsets.symmetric(
+            hintStyle: const TextStyle(fontSize: 14, color: Colors.black),
+            contentPadding: const EdgeInsets.symmetric(
               vertical: 2,
               horizontal: 10,
             ),
@@ -34,16 +35,16 @@ class CustomPasswordConfirmationTextFiled extends StatelessWidget {
             fillColor: Colors.grey[200],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.grey,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(
-                color: const Color.fromARGB(255, 235, 235, 235),
+              borderSide: const BorderSide(
+                color: Color.fromARGB(255, 235, 235, 235),
               ),
-            )),
+            ),),
       ),
     );
   }

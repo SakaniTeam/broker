@@ -1,27 +1,25 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, duplicate_ignore, avoid_print, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, library_private_types_in_public_api, prefer_final_fields
-
 import 'package:abdo/show_property.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-// ignore: use_key_in_widget_constructors
-class editpage extends StatefulWidget {
+
+class EditPage extends StatefulWidget {
   final String? docID;
 
-  const editpage({super.key, this.docID});
+  const EditPage({super.key, this.docID});
 
   @override
-  State<editpage> createState() => _editpageState();
+  State<EditPage> createState() => _EditPageState();
 }
 
-class _editpageState extends State<editpage> {
+class _EditPageState extends State<EditPage> {
   TextEditingController status = TextEditingController();
   TextEditingController address = TextEditingController();
   TextEditingController price = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController details = TextEditingController();
- bool isResd = true ;
+  bool isResd = true;
 
   void updateData() {
     print('Updated');
@@ -37,10 +35,12 @@ class _editpageState extends State<editpage> {
       " propertyStatus": status.text,
       "propertyType": 'Type',
     });
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Data Updated Successfuly'),
-      backgroundColor: Colors.green,
-    ));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Data Updated Successfuly'),
+        backgroundColor: Colors.green,
+      ),
+    );
     setState(() {});
   }
 
@@ -137,10 +137,11 @@ class _editpageState extends State<editpage> {
                     ElevatedButton(
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => showProperty(),
-                            ));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => showProperty(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 255, 152, 0),
@@ -173,7 +174,7 @@ class _editpageState extends State<editpage> {
   Future<String> fetchDataFromDatabase(fieldName) async {
     try {
       // Fetch the document from Firestore
-      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+      final DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
           .collection(isResd ? 'ResidentialProperty' : 'commercialProperty')
           .doc(widget.docID)
           .get();
@@ -181,16 +182,16 @@ class _editpageState extends State<editpage> {
       // Check if the document exists
       if (documentSnapshot.exists) {
         // Get the data map from the document
-        Map<String, dynamic> data =
-            documentSnapshot.data() as Map<String, dynamic>;
+        final Map<String, dynamic> data =
+            documentSnapshot.data()! as Map<String, dynamic>;
 
         // Check if the field exists in the data map
         if (data.containsKey(fieldName)) {
           // Retrieve the data for the specified field
-          dynamic fieldValue = data[fieldName];
+          final dynamic fieldValue = data[fieldName];
 
           // Convert fieldValue to String (or handle accordingly based on its type)
-          String fieldData = fieldValue.toString();
+          final String fieldData = fieldValue.toString();
 
           return fieldData;
         } else {
@@ -256,7 +257,6 @@ class _MyEditableTextFieldState extends State<MyEditableTextField> {
               widget.controller.text = snapshot.data ?? '';
               return TextField(
                 controller: widget.controller,
-             
                 enabled: true,
                 keyboardType: widget.isNumeric ? TextInputType.number : null,
                 inputFormatters: widget.isNumeric
@@ -308,7 +308,7 @@ class _MyEditableDropdownFormFieldState
   }
 
   _loadData() async {
-    String data = await widget.fetchDataFromDatabase();
+    final String data = await widget.fetchDataFromDatabase();
     setState(() {
       _selectedValue = widget.choices.contains(data)
           ? data

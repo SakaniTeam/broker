@@ -17,14 +17,15 @@ class CustomPasswordTextFiled extends StatelessWidget {
           if (data!.isEmpty) {
             return 'field is required';
           }
+          return null;
         },
         controller: myController,
         onChanged: onChange,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.lock),
+            prefixIcon: const Icon(Icons.lock),
             hintText: hintText,
-            hintStyle: TextStyle(fontSize: 14, color: Colors.black),
-            contentPadding: EdgeInsets.symmetric(
+            hintStyle: const TextStyle(fontSize: 14, color: Colors.black),
+            contentPadding: const EdgeInsets.symmetric(
               vertical: 2,
               horizontal: 10,
             ),
@@ -32,16 +33,16 @@ class CustomPasswordTextFiled extends StatelessWidget {
             fillColor: Colors.grey[200],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(
+              borderSide: const BorderSide(
                 color: Colors.grey,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(50),
-              borderSide: BorderSide(
-                color: const Color.fromARGB(255, 235, 235, 235),
+              borderSide: const BorderSide(
+                color: Color.fromARGB(255, 235, 235, 235),
               ),
-            )),
+            ),),
       ),
     );
   }

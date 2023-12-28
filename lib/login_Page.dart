@@ -1,3 +1,5 @@
+// ignore_for_file: duplicate_import, use_build_context_synchronously
+
 import 'package:abdo/Widgets/CustomEmailText.dart';
 import 'package:abdo/Widgets/CustomTextPassword.dart';
 import 'package:abdo/helper/ShowSnackBar.dart';
@@ -6,7 +8,6 @@ import 'package:abdo/home_page.dart';
 import 'package:abdo/sign_up.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -15,35 +16,36 @@ class Login extends StatefulWidget {
   State<Login> createState() => _LoginState();
 }
 
+
 class _LoginState extends State<Login> {
   Future signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) {
+      return;
+    }
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
     );
 
     // Once signed in, return the UserCredential
     await FirebaseAuth.instance.signInWithCredential(credential);
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) {
-    //       return HomePage();
-    //     },
-    //   ),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return  HomePage();
+        },
+      ),
+    );
   }
 
-  @override
-  String? email, password;
+  String? email;
+  String? password;
   bool isLoading = false;
   GlobalKey<FormState> formKey = GlobalKey();
   @override
@@ -60,7 +62,6 @@ class _LoginState extends State<Login> {
                   ClipRRect(
                     borderRadius: const BorderRadius.only(
                       bottomRight: Radius.circular(250),
-                      bottomLeft: Radius.circular(0),
                     ),
                     child: Image.asset(
                       'assets/test.jpg',
@@ -69,9 +70,9 @@ class _LoginState extends State<Login> {
                       height: 300,
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: const Text(
+                  const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text(
                       'Sign In',
                       style:
                           TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
@@ -110,19 +111,14 @@ class _LoginState extends State<Login> {
                         children: [
                           GestureDetector(
                             onTap: () async {
-                              if (email == '') {
-                                ShowSnackBar(context,
-                                    'Please , enter your email then press forget password');
-                                return;
-                              }
                               try {
                                 await FirebaseAuth.instance
                                     .sendPasswordResetEmail(email: email!);
                                 ShowSnackBar(context,
-                                    'Password reset is sent to your email');
+                                    'Password reset is sent to your email',);
                               } catch (e) {
                                 ShowSnackBar(context,
-                                    'Please check that email enter is valid then try again!');
+                                    'Please check that email enter is valid then try again!',);
                               }
                             },
                             child: const Text(
@@ -143,9 +139,8 @@ class _LoginState extends State<Login> {
                   ),
                   Center(
                       child: MaterialButton(
-                  
                     color: Colors.orange,
-                    child: Text(
+                    child: const Text(
                       'Sign in',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -156,12 +151,10 @@ class _LoginState extends State<Login> {
                           isLoading = true;
                         });
                         try {
-                          var auth = FirebaseAuth.instance;
-                          UserCredential user =
+                          final auth = FirebaseAuth.instance;
+                          final UserCredential user =
                               await auth.signInWithEmailAndPassword(
-                                  email: email!, password: password!);
-                          FirebaseAuth.instance.currentUser!
-                              .sendEmailVerification();
+                                  email: email!, password: password!,);
                           if (user.user!.emailVerified) {
                             navMethod(context);
                           } else {
@@ -170,10 +163,10 @@ class _LoginState extends State<Login> {
                         } on FirebaseAuthException catch (e) {
                           if (e.code == 'user-not-found') {
                             ShowSnackBar(
-                                context, 'No user found for that email.');
+                                context, 'No user found for that email.',);
                           } else if (e.code == 'wrong-password') {
                             ShowSnackBar(
-                                context, 'No user found for that email.');
+                                context, 'No user found for that email.',);
                           }
                         }
                         setState(() {
@@ -182,11 +175,11 @@ class _LoginState extends State<Login> {
                         // ShowSnackBar(context, 'Email already created');
                       }
                     },
-                  )),
+                  ),),
                   Container(
                     height: 5,
                   ),
-                  Text(
+                  const Text(
                     'OR',
                     style: TextStyle(
                       fontSize: 18,
@@ -215,7 +208,7 @@ class _LoginState extends State<Login> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return SignUpPage();
+                                return const SignUpPage();
                               },
                             ),
                           );
@@ -223,13 +216,13 @@ class _LoginState extends State<Login> {
                         child: const Text(
                           "Sign up",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, color: Colors.blue),
+                              fontWeight: FontWeight.bold, color: Colors.blue,),
                         ),
                       ),
                     ],
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
@@ -239,12 +232,12 @@ class _LoginState extends State<Login> {
 }
 
 void navMethod(BuildContext context) {
-  // Navigator.push(
-  //   context,
-  //   MaterialPageRoute(
-  //     builder: (context) {
-  //       return HomePage();
-  //     },
-  //   ),
-  // );
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) {
+        return HomePage();
+      },
+    ),
+  );
 }

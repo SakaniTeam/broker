@@ -25,7 +25,7 @@ class _WelcomePageState extends State<WelcomePage> {
           context,
           MaterialPageRoute(
             builder: (context) => Login(),
-          ));
+          ),);
     });
 
     super.initState();
@@ -54,13 +54,13 @@ class _WelcomePageState extends State<WelcomePage> {
                           textStyle: TextStyle(
                               fontSize: 30,
                               color: Colors.orange,
-                            )),
+                            ),),
                       RotateAnimatedText('OPTIMISTIC',
                           textStyle: TextStyle(
                               letterSpacing: 3,
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
-                              color: Colors.orange)),
+                              color: Colors.orange,),),
                       RotateAnimatedText(
                         'DIFFERENT',
                         textStyle: TextStyle(
@@ -69,8 +69,6 @@ class _WelcomePageState extends State<WelcomePage> {
                         ),
                       ),
                     ],
-                    isRepeatingAnimation: true,
-                    totalRepeatCount: 3,
                     pause: Duration(milliseconds: 500),
                   ),
                 ),
@@ -83,7 +81,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     // buttoun
                     child: MaterialButton(
                       onPressed: () {},
-                    )),
+                    ),),
                 TextButton(
                   style: TextButton.styleFrom(
                     // ignore: deprecated_member_use
@@ -96,13 +94,13 @@ class _WelcomePageState extends State<WelcomePage> {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return Login();
-                    }));
+                    },),);
                   },
                   child: const Text(
                     'lets go',
                     style: TextStyle(fontSize: 25),
                   ),
-                )
+                ),
               ],
             ),
           ),
